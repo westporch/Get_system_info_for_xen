@@ -35,7 +35,7 @@ function init()
 function get_hw_info()
 {
     dmidecode > $HW_INFO_PATH/dmidecode-$HOSTNAME.txt
-    dmidecode -t $HW_INFO_PATH/memory > dmidecode_memory-$HOSTNAME.txt
+    dmidecode -t memory > $HW_INFO_PATH/dmidecode_memory-$HOSTNAME.txt
     dmidecode -t bios > $HW_INFO_PATH/dmidecode_bios-$HOSTNAME.txt
     dmidecode -t system > $HW_INFO_PATH/dmidecode_system-$HOSTNAME.txt
     lspci  | grep -i raid > $HW_INFO_PATH/raid-$HOSTNAME.txt
