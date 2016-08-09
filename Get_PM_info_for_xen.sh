@@ -1,40 +1,84 @@
 #!/bin/bash
-# Hyun-gwan Seo
+#Hyun-gwan Seo
 
 HOSTNAME=`hostname`
+BASE="/root/PM"
+HW_INFO_PATH="$BASE/hw_info"
+PARTITIONS_DISK_PATH="$BASE/partitions_and_disk_info"
+NET_INFO_PATH="$BASE/network_info"
+SYS_STATUS_AND_SETTINGS_PATH="$BASE/sys_status_and_settings_info"
 
-xl info > xl_info-$HOSTNAME.txt
+function init()
+{
+    if [ ! -d $BASE ]; then
+        mkdir -p $BASE
+    fi
 
-cat /proc/cpuinfo > cpuinfo-$HOSTNAME.txt
+    if [ ! -d $HW_INFO_PATH ]; then
+        mkdir -p $HW_INFO_PATH
+    fi
 
-cat /proc/meminfo > meminfo-$HOSTNAME.txt
-free -h > free_h-$HOSTNAME.txt
+    if [ ! -d $PARTITIONS_DISK_PATH ]; then
+        mkdir -p $PARTITIONS_DISK_PATH
+    fi
 
-dmidecode -t memory > dmidecode_memory-$HOSTNAME.txt
-dmidecode -t bios > dmidecode_bios-$HOSTNAME.txt
-dmidecode -t system > dmidecode_system-$HOSTNAME.txt
+    if [ ! -d $NET_INFO_PATH ]; then
+        mkdir -p $NET_INFO_PATH
+    fi
+
+    if [ ! -d $SYS_STATUS_AND_SETTINGS_PATH ]; then
+        mkdir -p $SYS_STATUS_AND_SETTINGS_PATH
+    fi
+}
+
+#HW 정보를 수집합니다.
+function get_hw_info()
+{
+    dmidecode > $HW_INFO_PATH/dmidecode-$HOSTNAME.txt
+    dmidecode -t $HW_INFO_PATH/memory > dmidecode_memory-$HOSTNAME.txt
+    dmidecode -t bios > $HW_INFO_PATH/dmidecode_bios-$HOSTNAME.txt
+    dmidecode -t system > $HW_INFO_PATH/dmidecode_system-$HOSTNAME.txt
+    lspci  | grep -i raid > $HW_INFO_PATH/raid-$HOSTNAME.txt
+    lshw > $HW_INFO_PATH/lshw-$HOSTNAME.txt
+    cat /proc/cpuinfo > $HW_INFO_PATH/cpuinfo-$HOSTNAME.txt
+    cat /proc/meminfo > $HW_INFO_PATH/meminfo-$HOSTNAME.txt
+}
+
+#파티션과 디스크 정보를 수집합니다.
+function partitions_and_disk_info()
+{
+    parted -l > $PARTITIONS_DISK_PATH/parted_l-$HOSTNAME.txt
+    df -Th > $PARTITIONS_DISK_PATH/df_Th-$HOSTNAME.txt
+    fdisk -l > $PARTITIONS_DISK_PATH/fdisk_l-$HOSTNAME.txt
+}
 
 
-parted -l > parted_l-$HOSTNAME.txt
-df -Th > df_Th-$HOSTNAME.txt
+#네트워크 정보를 수집합니다.
+function get_network_info()
+{
+    cp /etc/network/interfaces $NET_INFO_PATH/interfaces-$HOSTNAME.txt
+    brctl show > $NET_INFO_PATH/brctlshow-$HOSTNAME.txt
+    ifconfig > $NET_INFO_PATH/ifconfig-$HOSTNAME.txt
+    route > $NET_INFO_PATH/route-$HOSTNAME.txt
+}
 
-lspci  | grep -i raid > raid-$HOSTNAME.txt
+#시스템 상태 및 설정 값을 수집합니다.
+function get_system_status_and_settings()
+{
+    dmesg > $SYS_STATUS_AND_SETTINGS_PATH/dmesg-$HOSTNAME.txt
+    cat /var/log/kern.log > $SYS_STATUS_AND_SETTINGS_PATH/kern.log-$HOSTNAME.txt
+    dpkg -l > $SYS_STATUS_AND_SETTINGS_PATH/dpkg_l-$HOSTNAME.txt
+    lsmod > $SYS_STATUS_AND_SETTINGS_PATH/lsmod-$HOSTNAME.txt
+    uname -a > $SYS_STATUS_AND_SETTINGS_PATH/uname_a-$HOSTNAME.txt
+    cat /etc/fstab > $SYS_STATUS_AND_SETTINGS_PATH/fstab-$HOSTNAME.txt
+    cat /etc/default/grub > $SYS_STATUS_AND_SETTINGS_PATH/grub-$HOSTNAME.txt
+    dstat 1 10 > $SYS_STATUS_AND_SETTINGS_PATH/dstat-$HOSTNAME.txt
+    xl info > $SYS_STATUS_AND_SETTINGS_PATH/xl_info-$HOSTNAME.txt
+    free -h > $SYS_STATUS_AND_SETTINGS_PATH/free_h-$HOSTNAME.txt
+}
 
-cp /etc/network/interfaces interfaces-$HOSTNAME.txt
-
-brctl show > brctlshow-$HOSTNAME.txt
-ifconfig > ifconfig-$HOSTNAME.txt
-route > route-$HOSTNAME.txt
-
-lshw > lshw-$HOSTNAME.txt
-dmidecode > dmidecode-$HOSTNAME.txt
-
-dmesg > dmesg-$HOSTNAME.txt
-cat /var/log/kern.log > kern.log-$HOSTNAME.txt
-dpkg -l > dpkg_l-$HOSTNAME.txt
-lsmod > lsmod-$HOSTNAME.txt
-uname -a > uname_a-$HOSTNAME.txt
-cat /etc/fstab > fstab-$HOSTNAME.txt
-cat /etc/default/grub > grub-$HOSTNAME.txt
-dstat 1 10 > dstat-$HOSTNAME.txt
-
+init
+get_hw_info
+partitions_and_disk_info
+get_network_info
+get_system_status_and_settings
