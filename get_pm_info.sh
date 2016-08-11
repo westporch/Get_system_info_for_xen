@@ -2,7 +2,7 @@
 #Hyun-gwan Seo
 
 HOSTNAME=`hostname`
-BASE="/root/PM"
+BASE="$1"
 HW_INFO_PATH="$BASE/hw_info"
 PARTITIONS_DISK_PATH="$BASE/partitions_and_disk_info"
 NET_INFO_PATH="$BASE/network_info"
@@ -10,6 +10,10 @@ SYS_STATUS_AND_SETTINGS_PATH="$BASE/sys_status_and_settings_info"
 
 function init()
 {
+    if [ 0 -eq $# ]; then
+        echo "Usage: $0 LOG_PATH"
+    fi
+
     if [ ! -d $BASE ]; then
         mkdir -p $BASE
     fi
@@ -74,6 +78,7 @@ function get_system_status_and_settings()
     cat /etc/default/grub > $SYS_STATUS_AND_SETTINGS_PATH/grub-$HOSTNAME.txt
     dstat 1 10 > $SYS_STATUS_AND_SETTINGS_PATH/dstat-$HOSTNAME.txt
     xl info > $SYS_STATUS_AND_SETTINGS_PATH/xl_info-$HOSTNAME.txt
+    xl list > $SYS_STATUS_AND_SETTINGS_PATH/xl_list-$HOSTNAME.txt
     free -h > $SYS_STATUS_AND_SETTINGS_PATH/free_h-$HOSTNAME.txt
 }
 
