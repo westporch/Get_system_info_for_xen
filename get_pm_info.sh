@@ -10,11 +10,6 @@ SYS_STATUS_AND_SETTINGS_PATH="$BASE/sys_status_and_settings_info"
 
 function init()
 {
-    if [ 0 -eq $# ]; then
-        echo "Usage: $0 LOG_PATH"
-        exit
-    fi
-
     if [ ! -d $BASE ]; then
         mkdir -p $BASE
     fi
@@ -82,6 +77,11 @@ function get_system_status_and_settings()
     xl list > $SYS_STATUS_AND_SETTINGS_PATH/xl_list-$HOSTNAME.txt
     free -h > $SYS_STATUS_AND_SETTINGS_PATH/free_h-$HOSTNAME.txt
 }
+
+if [ 0 -eq $# ]; then
+    echo "Usage: $0 LOG_DIR"                                                                                                                                           
+    exit
+fi
 
 init
 get_hw_info
