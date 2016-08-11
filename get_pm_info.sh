@@ -12,6 +12,7 @@ function init()
 {
     if [ 0 -eq $# ]; then
         echo "Usage: $0 LOG_PATH"
+        exit
     fi
 
     if [ ! -d $BASE ]; then
