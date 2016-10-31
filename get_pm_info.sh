@@ -1,6 +1,8 @@
 #!/bin/bash
 #Hyun-gwan Seo
 
+# Usage: ./get_pm_info.sh LOG_DIR(PM 정보를 기록할 디렉토리)
+
 HOSTNAME=`hostname`
 BASE="$1"
 HW_INFO_PATH="$BASE/hw_info"
@@ -8,6 +10,7 @@ PARTITIONS_DISK_PATH="$BASE/partitions_and_disk_info"
 NET_INFO_PATH="$BASE/network_info"
 SYS_STATUS_AND_SETTINGS_PATH="$BASE/sys_status_and_settings_info"
 
+#디렉토리 존재유무 확인
 function init()
 {
     if [ ! -d $BASE ]; then
@@ -79,7 +82,7 @@ function get_system_status_and_settings()
 }
 
 if [ 0 -eq $# ]; then
-    echo "Usage: $0 LOG_DIR"                                                                                                                                           
+    echo "Usage: $0 LOG_DIR(PM 정보를 기록할 디렉토리)" 
     exit
 fi
 
