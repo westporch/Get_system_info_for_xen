@@ -68,7 +68,7 @@ function get_network_info()
 #시스템 상태 및 설정 값을 수집합니다.
 function get_system_status_and_settings()
 {
-    dmesg > $SYS_STATUS_AND_SETTINGS_PATH/dmesg-$HOSTNAME.txt
+    dmesg -T > $SYS_STATUS_AND_SETTINGS_PATH/dmesg-$HOSTNAME.txt
     cat /var/log/kern.log > $SYS_STATUS_AND_SETTINGS_PATH/kern.log-$HOSTNAME.txt
     dpkg -l > $SYS_STATUS_AND_SETTINGS_PATH/dpkg_l-$HOSTNAME.txt
     lsmod > $SYS_STATUS_AND_SETTINGS_PATH/lsmod-$HOSTNAME.txt
