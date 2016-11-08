@@ -50,7 +50,8 @@ function get_hw_info()
 #파티션과 디스크 정보를 수집
 function partitions_and_disk_info()
 {
-    echo "Ignore" | parted -l > $PARTITIONS_DISK_PATH/parted_l-$HOSTNAME.txt
+    #echo "Ignore" | parted -l > $PARTITIONS_DISK_PATH/parted_l-$HOSTNAME.txt
+    parted -l > $PARTITIONS_DISK_PATH/parted_l-$HOSTNAME.txt
     df -Th > $PARTITIONS_DISK_PATH/df_Th-$HOSTNAME.txt
     fdisk -l > $PARTITIONS_DISK_PATH/fdisk_l-$HOSTNAME.txt
 }
