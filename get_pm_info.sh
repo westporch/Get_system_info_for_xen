@@ -34,7 +34,7 @@ function init()
     fi
 }
 
-#HW 정보를 수집합니다.
+#HW 정보를 수집
 function get_hw_info()
 {
     dmidecode > $HW_INFO_PATH/dmidecode-$HOSTNAME.txt
@@ -47,7 +47,7 @@ function get_hw_info()
     cat /proc/meminfo > $HW_INFO_PATH/meminfo-$HOSTNAME.txt
 }
 
-#파티션과 디스크 정보를 수집합니다.
+#파티션과 디스크 정보를 수집
 function partitions_and_disk_info()
 {
     echo "Ignore" | parted -l > $PARTITIONS_DISK_PATH/parted_l-$HOSTNAME.txt
@@ -56,16 +56,17 @@ function partitions_and_disk_info()
 }
 
 
-#네트워크 정보를 수집합니다.
+#네트워크 정보를 수집
 function get_network_info()
 {
     cp /etc/network/interfaces $NET_INFO_PATH/interfaces-$HOSTNAME.txt
     brctl show > $NET_INFO_PATH/brctlshow-$HOSTNAME.txt
     ifconfig > $NET_INFO_PATH/ifconfig-$HOSTNAME.txt
     route > $NET_INFO_PATH/route-$HOSTNAME.txt
+    cat /etc/resolv.conf > $NET_INFO_PATH/resolv_conf-$HOSTNAME.txt
 }
 
-#시스템 상태 및 설정 값을 수집합니다.
+#시스템 상태 및 설정 값을 수집
 function get_system_status_and_settings()
 {
     dmesg -T > $SYS_STATUS_AND_SETTINGS_PATH/dmesg-$HOSTNAME.txt
