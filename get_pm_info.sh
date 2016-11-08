@@ -80,6 +80,7 @@ function get_system_status_and_settings()
     xl info > $SYS_STATUS_AND_SETTINGS_PATH/xl_info-$HOSTNAME.txt
     xl list > $SYS_STATUS_AND_SETTINGS_PATH/xl_list-$HOSTNAME.txt
     free -h > $SYS_STATUS_AND_SETTINGS_PATH/free_h-$HOSTNAME.txt
+    uptime > $SYS_STATUS_AND_SETTINGS_PATH/uptime-$HOSTNAME.txt
 }
 
 if [ 0 -eq $# ]; then
