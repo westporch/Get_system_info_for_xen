@@ -42,6 +42,7 @@ function get_hw_info()
     dmidecode -t bios > $HW_INFO_PATH/dmidecode_bios-$HOSTNAME.txt
     dmidecode -t system > $HW_INFO_PATH/dmidecode_system-$HOSTNAME.txt
     lspci  | grep -i raid > $HW_INFO_PATH/raid-$HOSTNAME.txt
+    lspci > $HW_INFO_PATH/lspci-$HOSTNAME.txt
     lshw > $HW_INFO_PATH/lshw-$HOSTNAME.txt
     cat /proc/cpuinfo > $HW_INFO_PATH/cpuinfo-$HOSTNAME.txt
     cat /proc/meminfo > $HW_INFO_PATH/meminfo-$HOSTNAME.txt
